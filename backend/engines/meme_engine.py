@@ -5,18 +5,51 @@ def espresso_status():
         return "System low on caffeine ☕. Performance degraded."
     return "Espresso levels optimal."
 
-def generate(n):
-    if n == 3:
-        base = "Third wheel detected 💔"
-    elif n == 67:
-        base = "SIX-SEVEN 👀 iykyk"
-    elif n == 404:
-        base = "Error 404: Motivation not found."
-    elif n == 22:
-        base = "Taylor Swift mode activated 🎵"
-    elif n == 420:
-        base = "System paused for... reasons 🌿"
+def generate(number: int):
+    # Special numbers
+    special = {
+        3: "Third wheel detected 🚲. No one asked for this energy.",
+        7: "Lucky number? The algorithm says: maybe. iykyk.",
+        11: "Eleven. Stranger Things energy detected.",
+        22: "Taylor Swift has entered the chat 🎵 it's giving 22",
+        42: "The answer to life, the universe, and everything. Still checking if prime.",
+        67: "SIX-SEVEN 👀 iykyk. The streets know.",
+        69: "Highly compatible pair detected. Society has opinions.",
+        100: "Main character energy ✨ topper detected. Social life: null.",
+        404: "Error 404: Social life not found.",
+        420: "The system required an espresso break ☕ for this one.",
+        69: "It's giving… we're not going to say it. iykyk.",
+    }
+
+    if number in special:
+        base = special[number]
     else:
-        base = f"{n} is being judged by the algorithm."
+        templates = [
+            f"{number} is being judged by the algorithm.",
+            f"⚡ Number {number} just got roasted by AI logic!",
+            f"{number} is now famous in the multiverse of numbers.",
+            f"Alert 🚨: Number {number} is trending in the meme engine."
+        ]
+        base = random.choice(templates)
 
     return base + " | " + espresso_status()
+
+
+def generate_logs(number: int):
+    steps = [
+        "🔍 Initializing AI pipeline...",
+        f"📥 Received input: {number}",
+        "⚙️ Running rule engine...",
+        "🎭 Generating meme context...",
+        "🌐 Connecting to global servers...",
+        "🛰️ Syncing satellite data...",
+        "🤖 Consulting neural network...",
+        "✅ Analysis complete."
+    ]
+
+    # Randomly shuffle some intermediate logs to make them dynamic
+    middle = steps[2:-1]
+    random.shuffle(middle)
+
+    logs = [steps[0], steps[1]] + middle + [steps[-1]]
+    return logs
