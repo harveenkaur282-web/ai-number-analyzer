@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.engines import rule_engine, ml_engine, multiverse, global_engine, distributed, bureaucracy, social, meme
-from app.schemas import AnalyzeResponse
+from backend.engines import rule_engine, multiverse_engine, global_engine, bureaucracy, social_engine, meme_engine
+#from backend.schemas import AnalyzeResponse
 import asyncio
 
 app = FastAPI(title="OmniNumberAnalyzer v2.0")
