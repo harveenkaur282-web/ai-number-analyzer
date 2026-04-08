@@ -1,25 +1,30 @@
-import random, asyncio
+import asyncio, random
 
-NODES = {
-    "US": {"delay": 0.1, "bias": "stable"},
-    "India": {"delay": 0.2, "bias": "stable"},
-    "Japan": {"delay": 0.3, "bias": "unstable"},
-    "Europe": {"delay": 0.15, "bias": "stable"},
+COUNTRY_PROFILES = {
+    "us":     {"bias": 0.1,  "label": "US server"},
+    "india":  {"bias": 0.15, "label": "India data center"},
+    "japan":  {"bias": 0.35, "label": "Japan node"},
+    "europe": {"bias": 0.08, "label": "Europe cluster"},
 }
 
-def fetch_all(n):
-    logs = []
-    results = {}
-    for country, cfg in NODES.items():
-        logs.append(f"Fetching analysis from {country} data center...")
-        if cfg["bias"] == "unstable" or random.random() < 0.15:
-            logs.append(f"{country} node returned: UNSTABLE RESPONSE ⚠️")
-            results[country] = "UNSTABLE"
-        else:
-            verdict = "EVEN" if n % 2 == 0 else "ODD"
-            # 10% chance of a country just being wrong
-            if random.random() < 0.10:
-                verdict = "ODD" if verdict == "EVEN" else "EVEN"
-                logs.append(f"Conflict detected: {country} disagrees with consensus!")
-            results[country] = verdict
-    return results, logs
+async def fetch_one(country: str, n: int) -> dict:
+    p = COUNTRY_PROFILES.get(country, COUNTRY_PROFILES["us"])
+    await asyncio.sleep(random.uniform(0.2, 1.2))  # fake latency
+    unstable = random.random() < p["bias"]
+    if unstable:
+        return {"country": country, "result": "unstable",
+                "log": f"{p['label']} returned unstable response"}
+    # Slight random corruption for drama
+    vote = (n % 2 == 0) if random.random() > 0.1 else not (n % 2 == 0)
+    return {"country": country, "result": "EVEN" if vote else "ODD",
+            "log": f"Fetching analysis from {p['label']}..."}
+
+async def fetch_all(n: int) -> dict:
+    tasks = [fetch_one(c, n) for c in COUNTRY_PROFILES]
+    results = await asyncio.gather(*tasks)
+    logs = [r["log"] for r in results]
+    votes = [r["result"] for r in results if r["result"] != "unstable"]
+    conflicts = len(set(votes)) > 1
+    if conflicts:
+        logs.append("⚠ Conflict detected between regions. Escalating to multiverse engine.")
+    return {"logs": logs, "votes": votes}

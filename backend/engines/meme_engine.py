@@ -5,7 +5,7 @@ def espresso_status():
         return "System low on caffeine ☕. Performance degraded."
     return "Espresso levels optimal."
 
-def generate(number: int):
+def generate(number: int, is_even: bool, is_prime: bool):
     # Special numbers
     special = {
         3: "Third wheel detected 🚲. No one asked for this energy.",
@@ -14,11 +14,10 @@ def generate(number: int):
         22: "Taylor Swift has entered the chat 🎵 it's giving 22",
         42: "The answer to life, the universe, and everything. Still checking if prime.",
         67: "SIX-SEVEN 👀 iykyk. The streets know.",
-        69: "Highly compatible pair detected. Society has opinions.",
+        69: "It's giving… we're not going to say it. iykyk.",
         100: "Main character energy ✨ topper detected. Social life: null.",
         404: "Error 404: Social life not found.",
-        420: "The system required an espresso break ☕ for this one.",
-        69: "It's giving… we're not going to say it. iykyk.",
+        420: "The system required an espresso break ☕ for this one."
     }
 
     if number in special:
